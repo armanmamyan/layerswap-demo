@@ -1,22 +1,12 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        'ethers/lib/utils': 'ethers',
-        'ethers/lib/contract': 'ethers',
-        'ethers/lib/providers': 'ethers',
-      };
-      // Handle fallbacks for Node.js modules
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'ethers/lib/utils': path.resolve(__dirname, 'lib/ethers-v5-shim.mjs'),
+    };
     return config;
   },
 };
